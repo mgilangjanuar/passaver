@@ -44,6 +44,10 @@
       await require('./src/action/delete')(inquirer)
     })
 
+    program.command('set-config').action(async () => {
+      await require('./src/action/setConfig')(inquirer)
+    })
+
     await program.parseAsync(process.argv)
   } else {
     const action = await inquirer.prompt([
@@ -51,7 +55,7 @@
         name: 'type',
         type: 'list',
         message: 'What you want?',
-        choices: ['Get', 'Create', 'Update', 'Delete']
+        choices: ['Get', 'Create', 'Update', 'Delete', new inquirer.Separator(), 'Set Config']
       }
     ])
 
@@ -63,6 +67,8 @@
       await require('./src/action/delete')(inquirer)
     } else if (action.type === 'Update') {
       await require('./src/action/update')(inquirer)
+    } else if (action.type === 'Set Config') {
+      await require('./src/action/setConfig')(inquirer)
     }
   }
 
