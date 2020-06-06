@@ -30,7 +30,7 @@
       await require('./src/action/store')(inquirer)
     })
 
-    program.parse(process.argv)
+    await program.parseAsync(process.argv)
   } else {
     const action = await inquirer.prompt([
       {
