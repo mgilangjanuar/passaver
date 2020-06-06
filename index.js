@@ -26,8 +26,16 @@
       await require('./src/action/get')(inquirer)
     })
 
-    program.command('store').action(async () => {
+    program.command('create').action(async () => {
       await require('./src/action/store')(inquirer)
+    })
+
+    program.command('update').action(async () => {
+
+    })
+
+    program.command('delete').action(async () => {
+
     })
 
     await program.parseAsync(process.argv)
@@ -37,13 +45,13 @@
         name: 'type',
         type: 'list',
         message: 'What you want?',
-        choices: ['Store', 'Get', 'Update', 'Delete']
+        choices: ['Create', 'Get', 'Update', 'Delete']
       }
     ])
 
     if (action.type === 'Get') {
       await require('./src/action/get')(inquirer)
-    } else if (action.type === 'Store') {
+    } else if (action.type === 'Create') {
       await require('./src/action/store')(inquirer)
     }
   }
