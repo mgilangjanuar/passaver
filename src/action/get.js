@@ -1,9 +1,10 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
   const decrypt = require('../util/decrypt')
+  const homedir = require('../util/homedir')
   const clipboardy = require('clipboardy')
 
-  const file = fs.readFileSync('./storage')
+  const file = fs.readFileSync(`${homedir}/passaver-storage`)
   const storage = JSON.parse(decrypt(file.toString()))
 
   const search = await inquirer.prompt([

@@ -11,6 +11,7 @@
   const fs = require('fs')
   const encrypt = require('./src/util/encrypt')
   const decrypt = require('./src/util/decrypt')
+  const homedir = require('./src/util/homedir')
   const program = require('commander')
   const inquirer = require('inquirer')
   const autocomplete = require('inquirer-autocomplete-prompt')
@@ -22,12 +23,16 @@
     .description('Passaver: save your password securely')
     .parse(process.argv)
 
+  if (!fs.existsSync(`${homedir}/passaver-config.json`)) {
+    fs.writeFileSync(`${homedir}/passaver-config.json`, JSON.stringify({ rsa: '/.ssh/id_rsa' }))
+  }
+
   let isEmpty = false
-  if (!fs.existsSync('./storage')) {
+  if (!fs.existsSync(`${homedir}/passaver-storage`)) {
     isEmpty = true
-    fs.writeFileSync('./storage', encrypt(JSON.stringify([])))
+    fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(JSON.stringify([])))
   } else {
-    const file = fs.readFileSync('./storage')
+    const file = fs.readFileSync(`${homedir}/passaver-storage`)
     const storage = JSON.parse(decrypt(file.toString()))
     isEmpty = !storage.length
   }

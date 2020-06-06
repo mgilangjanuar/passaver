@@ -2,8 +2,9 @@ module.exports = async function (inquirer) {
   const fs = require('fs')
   const decrypt = require('../util/decrypt')
   const encrypt = require('../util/encrypt')
+  const homedir = require('../util/homedir')
 
-  const file = fs.readFileSync('./storage')
+  const file = fs.readFileSync(`${homedir}/passaver-storage`)
   const storage = JSON.parse(decrypt(file.toString()))
 
   const search = await inquirer.prompt([
@@ -31,7 +32,7 @@ module.exports = async function (inquirer) {
       }
     ])
     const account = selected.accounts.find(acc => acc.username === find.username)
-    fs.writeFileSync('./storage', encrypt(
+    fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(
       JSON.stringify([
         ...storage.filter(acc => acc.site !== selected.site),
         {
@@ -41,7 +42,7 @@ module.exports = async function (inquirer) {
     ))
     console.log(`Account \`${account.username}\` in \`${selected.site}\` deleted!`)
   } else {
-    fs.writeFileSync('./storage', encrypt(
+    fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(
       JSON.stringify(storage.filter(acc => acc.site !== selected.site))
     ))
     console.log(`Account for \`${selected.site}\` deleted!`)

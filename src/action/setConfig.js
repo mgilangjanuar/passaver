@@ -1,6 +1,7 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
-  const config = JSON.parse(fs.readFileSync('./config.json'))
+  const homedir = require('../util/homedir')
+  const config = JSON.parse(fs.readFileSync(`${homedir}/passaver-config.json`))
 
   const data = await inquirer.prompt(Object.keys(config).map(
     key => {
@@ -11,5 +12,5 @@ module.exports = async function (inquirer) {
     }
   ))
 
-  fs.writeFileSync('./config.json', JSON.stringify(data))
+  fs.writeFileSync(`${homedir}/passaver-config.json`, JSON.stringify(data))
 }

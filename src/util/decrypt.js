@@ -1,9 +1,9 @@
 module.exports = function (data) {
   const fs = require('fs')
   const NodeRSA = require('node-rsa')
-  const homedir = require('os').homedir()
+  const homedir = require('./homedir')
 
-  const config = JSON.parse(fs.readFileSync('./config.json'))
+  const config = JSON.parse(fs.readFileSync(`${homedir}/passaver-config.json`))
 
   const rsa = fs.readFileSync(`${homedir}${config.rsa}`)
   const key = new NodeRSA(rsa)
