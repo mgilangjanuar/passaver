@@ -15,6 +15,7 @@
     "inquirer": "^7.1.0",
     "inquirer-autocomplete-prompt": "^1.0.2",
     "node-mac-auth": "^1.0.0",
+    "node-rsa": "^1.0.8",
     "sudo-prompt": "^9.2.1"
   }
 }

@@ -6,6 +6,8 @@
     process.exit(1)
   }
 
+  const fs = require('fs')
+  const encrypt = require('./src/util/encrypt')
   const program = require('commander')
   const inquirer = require('inquirer')
   const autocomplete = require('inquirer-autocomplete-prompt')
@@ -16,6 +18,10 @@
     .version('0.0.1')
     .description('Passaver: save your password securely')
     .parse(process.argv)
+
+  if (!fs.existsSync('./storage')) {
+    fs.writeFileSync('./storage', encrypt(JSON.stringify([])))
+  }
 
   if (program.args.length) {
     program.command('ping').action(() => {

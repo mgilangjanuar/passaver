@@ -1,8 +1,10 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
+  const decrypt = require('../util/decrypt')
+  const encrypt = require('../util/encrypt')
 
-  const file = fs.readFileSync('./storage.json')
-  const storage = JSON.parse(file)
+  const file = fs.readFileSync('./storage')
+  const storage = JSON.parse(decrypt(file.toString()))
 
   const search = await inquirer.prompt([
     {
@@ -44,7 +46,7 @@ module.exports = async function (inquirer) {
         }
       ]
     })
-    fs.writeFileSync('./storage.json', JSON.stringify(storage))
+    fs.writeFileSync('./storage', encrypt(JSON.stringify(storage)))
   } else {
     const selected = storage.find(acc => search.site === acc.site)
     const data = await inquirer.prompt([
@@ -63,7 +65,11 @@ module.exports = async function (inquirer) {
       password: data.password,
       note: ''
     })
-    fs.writeFileSync('./storage.json', JSON.stringify([...storage.filter(acc => acc.site !== selected.site), selected]))
+    fs.writeFileSync('./storage', encrypt(
+      JSON.stringify(
+        [...storage.filter(acc => acc.site !== selected.site), selected]
+      )
+    ))
   }
 
   console.log('Saved!')

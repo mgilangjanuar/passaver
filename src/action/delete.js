@@ -1,8 +1,10 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
+  const decrypt = require('../util/decrypt')
+  const encrypt = require('../util/encrypt')
 
-  const file = fs.readFileSync('./storage.json')
-  const storage = JSON.parse(file)
+  const file = fs.readFileSync('./storage')
+  const storage = JSON.parse(decrypt(file.toString()))
 
   const search = await inquirer.prompt([
     {
@@ -29,15 +31,19 @@ module.exports = async function (inquirer) {
       }
     ])
     const account = selected.accounts.find(acc => acc.username === action.username)
-    fs.writeFileSync('./storage.json', JSON.stringify([
-      ...storage.filter(acc => acc.site !== selected.site),
-      {
-        ...selected, accounts: selected.accounts.filter(acc => acc.username !== account.username)
-      }
-    ]))
+    fs.writeFileSync('./storage', encrypt(
+      JSON.stringify([
+        ...storage.filter(acc => acc.site !== selected.site),
+        {
+          ...selected, accounts: selected.accounts.filter(acc => acc.username !== account.username)
+        }
+      ])
+    ))
     console.log(`Account \`${account.username}\` in \`${selected.site}\` deleted!`)
   } else {
-    fs.writeFileSync('./storage.json', JSON.stringify(storage.filter(acc => acc.site !== selected.site)))
+    fs.writeFileSync('./storage', encrypt(
+      JSON.stringify(storage.filter(acc => acc.site !== selected.site))
+    ))
     console.log(`Account for \`${selected.site}\` deleted!`)
   }
 }
