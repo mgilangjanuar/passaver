@@ -21,7 +21,7 @@
   inquirer.registerPrompt('autocomplete', autocomplete)
 
   program
-    .version('0.0.1')
+    .version('0.0.5')
     .description('Passaver: save your password securely')
     .parse(process.argv)
 
