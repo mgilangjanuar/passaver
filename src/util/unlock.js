@@ -4,7 +4,6 @@ module.exports = async function() {
 
   if (canPromptTouchID()) {
     await promptTouchID({ reason: 'to unlock the Passaver' })
-    console.log('Login succeed!')
   } else {
     await new Promise((resolve, reject) => {
       sudo.exec('', { name: 'Passaver' }, error => {

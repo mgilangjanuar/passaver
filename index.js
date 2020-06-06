@@ -39,6 +39,8 @@
 
     if (action.type === 'Get') {
       await require('./src/action/get')(inquirer)
+    } else if (action.type === 'Store') {
+      await require('./src/action/store')(inquirer)
     }
   }
 
