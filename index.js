@@ -40,7 +40,7 @@
     })
 
     program.command('create').action(async () => {
-      await require('./src/action/create')(inquirer)
+      await require('./src/action/create')(inquirer, isEmpty)
     })
 
     program.command('update').action(async () => {
@@ -69,7 +69,7 @@
     if (action.type === 'Get') {
       await require('./src/action/get')(inquirer)
     } else if (action.type === 'Create') {
-      await require('./src/action/create')(inquirer)
+      await require('./src/action/create')(inquirer, isEmpty)
     } else if (action.type === 'Delete') {
       await require('./src/action/delete')(inquirer)
     } else if (action.type === 'Update') {
