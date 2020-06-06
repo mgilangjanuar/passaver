@@ -76,5 +76,7 @@ module.exports = async function (inquirer, isEmpty) {
     ))
   }
 
-  console.log('Saved!')
+  const spinner = require('ora')()
+  console.log('')
+  spinner.succeed('Saved!')
 }

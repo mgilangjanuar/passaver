@@ -1,8 +1,9 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
+  const clipboardy = require('clipboardy')
+  const spinner = require('ora')()
   const decrypt = require('../util/decrypt')
   const homedir = require('../util/homedir')
-  const clipboardy = require('clipboardy')
 
   const file = fs.readFileSync(`${homedir}/passaver-storage`)
   const storage = JSON.parse(decrypt(file.toString()))
@@ -34,6 +35,8 @@ module.exports = async function (inquirer) {
     ])
     account = selected.accounts.find(acc => acc.username === action.username)
   }
+
   clipboardy.writeSync(account.password)
-  console.log(`Password for \`${account.username}\` copied to the clipboard!`)
+  console.log('')
+  spinner.succeed(`Password for \`${account.username}\` copied to the clipboard!`)
 }

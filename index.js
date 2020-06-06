@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 (async () => {
+  const spinner = require('ora')('Waiting your authentication...').start()
   try {
     await require('./src/util/unlock')()
   } catch (error) {
-    console.log('Login failed:', error.message || error)
+    spinner.fail(`Login failed: ${error.message || error}`)
     process.exit(1)
   }
+  spinner.succeed('Logged in\n')
 
   const fs = require('fs')
   const encrypt = require('./src/util/encrypt')
@@ -60,6 +62,11 @@
 
     program.command('set-config').action(async () => {
       await require('./src/action/setConfig')(inquirer)
+    })
+
+    program.command('import <app> <file>')
+    .action(async (app, file) => {
+      await require(`./src/plugins/importer/${app}`)(file)
     })
 
     await program.parseAsync(process.argv)

@@ -1,5 +1,6 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
+  const spinner = require('ora')()
   const decrypt = require('../util/decrypt')
   const encrypt = require('../util/encrypt')
   const homedir = require('../util/homedir')
@@ -40,11 +41,13 @@ module.exports = async function (inquirer) {
         }
       ])
     ))
-    console.log(`Account \`${account.username}\` in \`${selected.site}\` deleted!`)
+    console.log('')
+    spinner.succeed(`Account \`${account.username}\` in \`${selected.site}\` deleted!`)
   } else {
     fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(
       JSON.stringify(storage.filter(acc => acc.site !== selected.site))
     ))
-    console.log(`Account for \`${selected.site}\` deleted!`)
+    console.log('')
+    spinner.succeed(`Account for \`${selected.site}\` deleted!`)
   }
 }
