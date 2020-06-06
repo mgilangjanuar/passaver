@@ -1,6 +1,5 @@
 module.exports = async function (inquirer) {
   const fs = require('fs')
-  const clipboardy = require('clipboardy')
 
   const file = fs.readFileSync('./storage.json')
   const storage = JSON.parse(file)
@@ -20,7 +19,6 @@ module.exports = async function (inquirer) {
   ])
 
   const selected = storage.find(acc => search.site === acc.site)
-  let account = selected.accounts[0]
   if (selected.accounts.length > 1) {
     const action = await inquirer.prompt([
       {
@@ -30,8 +28,16 @@ module.exports = async function (inquirer) {
         choices: selected.accounts.map(acc => acc.username)
       }
     ])
-    account = selected.accounts.find(acc => acc.username === action.username)
+    const account = selected.accounts.find(acc => acc.username === action.username)
+    fs.writeFileSync('./storage.json', JSON.stringify([
+      ...storage.filter(acc => acc.site !== selected.site),
+      {
+        ...selected, accounts: selected.accounts.filter(acc => acc.username !== account.username)
+      }
+    ]))
+    console.log(`Account \`${account.username}\` in \`${selected.site}\` deleted!`)
+  } else {
+    fs.writeFileSync('./storage.json', JSON.stringify(storage.filter(acc => acc.site !== selected.site)))
+    console.log(`Account for \`${selected.site}\` deleted!`)
   }
-  clipboardy.writeSync(account.password)
-  console.log(`Password for \`${account.username}\` copied!`)
 }

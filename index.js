@@ -27,7 +27,7 @@
     })
 
     program.command('create').action(async () => {
-      await require('./src/action/store')(inquirer)
+      await require('./src/action/create')(inquirer)
     })
 
     program.command('update').action(async () => {
@@ -35,7 +35,7 @@
     })
 
     program.command('delete').action(async () => {
-
+      await require('./src/action/delete')(inquirer)
     })
 
     await program.parseAsync(process.argv)
@@ -52,7 +52,9 @@
     if (action.type === 'Get') {
       await require('./src/action/get')(inquirer)
     } else if (action.type === 'Create') {
-      await require('./src/action/store')(inquirer)
+      await require('./src/action/create')(inquirer)
+    } else if (action.type === 'Delete') {
+      await require('./src/action/delete')(inquirer)
     }
   }
 

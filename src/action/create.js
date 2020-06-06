@@ -1,4 +1,4 @@
-module.exports = async function get(inquirer) {
+module.exports = async function (inquirer) {
   const fs = require('fs')
 
   const file = fs.readFileSync('./storage.json')
