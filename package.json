@@ -1,6 +1,6 @@
 {
   "name": "passaver",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Passaver: save your password securely",
   "main": "index.js",
   "scripts": {

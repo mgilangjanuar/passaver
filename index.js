@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 (async () => {
   try {
     await require('./src/util/unlock')()
