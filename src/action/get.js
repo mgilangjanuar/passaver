@@ -35,5 +35,5 @@ module.exports = async function (inquirer) {
     account = selected.accounts.find(acc => acc.username === action.username)
   }
   clipboardy.writeSync(account.password)
-  console.log(`Password for \`${account.username}\` copied!`)
+  console.log(`Password for \`${account.username}\` copied to the clipboard!`)
 }
