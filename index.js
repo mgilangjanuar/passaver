@@ -26,6 +26,10 @@
       await require('./src/action/get')(inquirer)
     })
 
+    program.command('store').action(async () => {
+      await require('./src/action/store')(inquirer)
+    })
+
     program.parse(process.argv)
   } else {
     const action = await inquirer.prompt([
@@ -33,7 +37,7 @@
         name: 'type',
         type: 'list',
         message: 'What you want?',
-        choices: ['Store', 'Get', 'Update']
+        choices: ['Store', 'Get', 'Update', 'Delete']
       }
     ])
 

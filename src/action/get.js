@@ -22,7 +22,7 @@ module.exports = async function get(inquirer) {
   const selected = storage.find(acc => search.site === acc.site)
   let account = selected.accounts[0]
   if (selected.accounts.length > 1) {
-    const search = await inquirer.prompt([
+    const action = await inquirer.prompt([
       {
         name: 'username',
         type: 'list',
@@ -30,7 +30,7 @@ module.exports = async function get(inquirer) {
         choices: selected.accounts.map(acc => acc.username)
       }
     ])
-    account = selected.accounts.find(acc => acc.username === search.username)
+    account = selected.accounts.find(acc => acc.username === action.username)
   }
   clipboardy.writeSync(account.password)
   console.log(`Password for \`${account.username}\` copied!`)
