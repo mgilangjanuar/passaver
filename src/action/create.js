@@ -1,4 +1,4 @@
-module.exports = async function (inquirer) {
+module.exports = async function (inquirer, isEmpty) {
   const fs = require('fs')
   const decrypt = require('../util/decrypt')
   const encrypt = require('../util/encrypt')
@@ -6,21 +6,24 @@ module.exports = async function (inquirer) {
   const file = fs.readFileSync('./storage')
   const storage = JSON.parse(decrypt(file.toString()))
 
-  const search = await inquirer.prompt([
-    {
-      name: 'site',
-      type: 'autocomplete',
-      message: 'What\'s site?',
-      source: (_, input) => {
-        return new Promise(resolve => {
-          const founds = [{ site: '-- add new site --' }, ...storage].filter(acc => acc.site.includes(input || ''))
-          resolve(founds.map(acc => acc.site))
-        })
+  let search
+  if (!isEmpty) {
+    search = await inquirer.prompt([
+      {
+        name: 'site',
+        type: 'autocomplete',
+        message: 'What\'s site?',
+        source: (_, input) => {
+          return new Promise(resolve => {
+            const founds = [{ site: '-- add new site --' }, ...storage].filter(acc => acc.site.includes(input || ''))
+            resolve(founds.map(acc => acc.site))
+          })
+        }
       }
-    }
-  ])
+    ])
+  }
 
-  if (search.site === '-- add new site --') {
+  if (isEmpty || search.site === '-- add new site --') {
     const data = await inquirer.prompt([
       {
         name: 'site',

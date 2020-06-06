@@ -8,6 +8,7 @@
 
   const fs = require('fs')
   const encrypt = require('./src/util/encrypt')
+  const decrypt = require('./src/util/decrypt')
   const program = require('commander')
   const inquirer = require('inquirer')
   const autocomplete = require('inquirer-autocomplete-prompt')
@@ -19,8 +20,14 @@
     .description('Passaver: save your password securely')
     .parse(process.argv)
 
+  let isEmpty = false
   if (!fs.existsSync('./storage')) {
+    isEmpty = true
     fs.writeFileSync('./storage', encrypt(JSON.stringify([])))
+  } else {
+    const file = fs.readFileSync('./storage')
+    const storage = JSON.parse(decrypt(file.toString()))
+    isEmpty = !storage.length
   }
 
   if (program.args.length) {
@@ -55,7 +62,7 @@
         name: 'type',
         type: 'list',
         message: 'What you want?',
-        choices: ['Get', 'Create', 'Update', 'Delete', new inquirer.Separator(), 'Set Config']
+        choices: isEmpty ? ['Create', new inquirer.Separator(), 'Set Config'] : ['Get', 'Create', 'Update', 'Delete', new inquirer.Separator(), 'Set Config']
       }
     ])
 
