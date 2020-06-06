@@ -3,7 +3,9 @@ module.exports = function (data) {
   const NodeRSA = require('node-rsa')
   const homedir = require('os').homedir()
 
-  const rsa = fs.readFileSync(`${homedir}/.ssh/id_rsa`)
+  const config = JSON.parse(fs.readFileSync('./config.json'))
+
+  const rsa = fs.readFileSync(`${homedir}${config.rsa}`)
   const key = new NodeRSA(rsa)
   return key.encrypt(data, 'base64')
 }
