@@ -40,17 +40,31 @@ module.exports = async function (inquirer, isEmpty) {
         message: 'Password:'
       }
     ])
-    storage.push({
-      site: data.site,
-      accounts: [
-        {
-          username: data.username,
-          password: data.password,
-          note: ''
-        }
-      ]
-    })
-    fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(JSON.stringify(storage)))
+    const selected = storage.find(acc => data.site === acc.site)
+    if (!selected) {
+      storage.push({
+        site: data.site,
+        accounts: [
+          {
+            username: data.username,
+            password: data.password,
+            note: ''
+          }
+        ]
+      })
+      fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(JSON.stringify(storage)))
+    } else if (!selected.accounts.find(acc => acc.username === data.username)) {
+      selected.accounts.push({
+        username: data.username,
+        password: data.password,
+        note: ''
+      })
+      fs.writeFileSync(`${homedir}/passaver-storage`, encrypt(
+        JSON.stringify(
+          [ ...storage.filter(acc => acc.site !== data.site), selected]
+        )
+      ))
+    }
   } else {
     const selected = storage.find(acc => search.site === acc.site)
     const data = await inquirer.prompt([
