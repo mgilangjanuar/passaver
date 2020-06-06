@@ -37,7 +37,7 @@
     })
 
     program.command('update').action(async () => {
-
+      await require('./src/action/update')(inquirer)
     })
 
     program.command('delete').action(async () => {
@@ -51,7 +51,7 @@
         name: 'type',
         type: 'list',
         message: 'What you want?',
-        choices: ['Create', 'Get', 'Update', 'Delete']
+        choices: ['Get', 'Create', 'Update', 'Delete']
       }
     ])
 
@@ -61,6 +61,8 @@
       await require('./src/action/create')(inquirer)
     } else if (action.type === 'Delete') {
       await require('./src/action/delete')(inquirer)
+    } else if (action.type === 'Update') {
+      await require('./src/action/update')(inquirer)
     }
   }
 

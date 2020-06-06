@@ -22,7 +22,7 @@ module.exports = async function (inquirer) {
 
   const selected = storage.find(acc => search.site === acc.site)
   if (selected.accounts.length > 1) {
-    const action = await inquirer.prompt([
+    const find = await inquirer.prompt([
       {
         name: 'username',
         type: 'list',
@@ -30,7 +30,7 @@ module.exports = async function (inquirer) {
         choices: selected.accounts.map(acc => acc.username)
       }
     ])
-    const account = selected.accounts.find(acc => acc.username === action.username)
+    const account = selected.accounts.find(acc => acc.username === find.username)
     fs.writeFileSync('./storage', encrypt(
       JSON.stringify([
         ...storage.filter(acc => acc.site !== selected.site),
